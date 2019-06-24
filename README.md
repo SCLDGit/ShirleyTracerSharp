@@ -4,3 +4,4 @@ A(nother) set of C# ports of Peter Shirley's short books on raytracing: In One W
 # Changelog
 
 - 6/24/2019 - Initial commit.
+- 6/24/2019 - Added Apache 2.0 license for ImageSharp.
