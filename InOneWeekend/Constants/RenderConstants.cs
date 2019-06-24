@@ -9,6 +9,6 @@ namespace InOneWeekend.Constants
         internal static int NumberOfSamples => 8;
         internal static bool PrintRenderInfo => true;
         internal static bool UseParallelProcessing => true;
-        internal static string SaveLocation => System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ShirleyTracer", "Renders", $@"render_{DateTime.Now:MM-dd-yyyy-HH-mm-ss}.png");
+        internal static string SaveLocation => System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ShirleyTracer", "Renders", "InOneWeekend", $@"InOneWeekend_{DateTime.Now:MM-dd-yyyy-HH-mm-ss}.png");
     }
 }
