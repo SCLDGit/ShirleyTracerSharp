@@ -6,6 +6,9 @@ Included are some nice QoL features that go beyond the scope of the books, inclu
 - Optional parallel processing switch (see RenderConstants.cs)
 - Optional render data overlay at render time, including render size, samples per pixel, whether it was rendered in parallel, and total render time (see RenderConstansts.cs)
 
+# InOneWeekend
+![InOneWeekend Render Example](https://github.com/SCLDGit/ShirleyTracerSharp/blob/master/InOneWeekend/InOneWeekend/ExampleImage/ExampleRender.png)
+
 # Changelog
 
 - 6/24/2019 - Initial commit.
