@@ -13,3 +13,4 @@ Included are some nice QoL features that go beyond the scope of the books, inclu
 
 - 6/24/2019 - Initial commit.
 - 6/24/2019 - Added Apache 2.0 license for ImageSharp.
+- 6/24/2019 - Some minor code cleanup.

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
-using InOneWeekend.DataTypes;
 using InOneWeekend.DataTypes.Materials;
 using InOneWeekend.DataTypes.Shapes;
 using InOneWeekend.DataTypes.Utility;
@@ -11,7 +9,7 @@ using Math = System.Math;
 
 namespace InOneWeekend
 {
-    static class SceneGenerator
+    internal static class SceneGenerator
     {
         internal static List<IHitTarget> GenerateThreeSphereScene()
         {
@@ -51,20 +49,18 @@ namespace InOneWeekend
                 {
                     var materialPicker = rng.NextDouble();
                     var center = new Vec3(i + 0.9 * rng.NextDouble(), 0.2, j + 0.9 * rng.NextDouble());
-                    if ( (center - new Vec3(4, 0.2, 0)).GetLength() > 0.9 )
+                    if ( !((center - new Vec3(4, 0.2, 0)).GetLength() > 0.9) ) continue;
+                    if ( materialPicker < 0.7 )
                     {
-                        if ( materialPicker < 0.8 )
-                        {
-                            returnList.Add(new Sphere(center, 0.2, new Lambertian(new Color(rng.NextDouble() * rng.NextDouble(), rng.NextDouble() * rng.NextDouble(), rng.NextDouble() * rng.NextDouble())) ));
-                        }
-                        else if ( materialPicker < 0.95 )
-                        {
-                            returnList.Add(new Sphere(center, 0.2, new Glossy(new Color(0.5 * (1 + rng.NextDouble()), 0.5 * (1 + rng.NextDouble()), 0.5 * (1 + rng.NextDouble())), 0.5 * rng.NextDouble())));
-                        }
-                        else
-                        {
-                            returnList.Add(new Sphere(center, 0.2, new Dielectric(new Color(rng.NextDouble() * rng.NextDouble(), rng.NextDouble() * rng.NextDouble(), rng.NextDouble() * rng.NextDouble()), 1.5) ));
-                        }
+                        returnList.Add(new Sphere(center, 0.2, new Lambertian(new Color(rng.NextDouble() * rng.NextDouble(), rng.NextDouble() * rng.NextDouble(), rng.NextDouble() * rng.NextDouble())) ));
+                    }
+                    else if ( materialPicker < 0.8 )
+                    {
+                        returnList.Add(new Sphere(center, 0.2, new Glossy(new Color(0.5 * (1 + rng.NextDouble()), 0.5 * (1 + rng.NextDouble()), 0.5 * (1 + rng.NextDouble())), 0.5 * rng.NextDouble())));
+                    }
+                    else
+                    {
+                        returnList.Add(new Sphere(center, 0.2, new Dielectric(new Color(1, 1, 1), 1.5) ));
                     }
                 }
             }
