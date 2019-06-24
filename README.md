@@ -7,10 +7,11 @@ Included are some nice QoL features that go beyond the scope of the books, inclu
 - Optional render data overlay at render time, including render size, samples per pixel, whether it was rendered in parallel, and total render time (see RenderConstansts.cs)
 
 # InOneWeekend
-![InOneWeekend Render Example](https://github.com/SCLDGit/ShirleyTracerSharp/blob/master/InOneWeekend/InOneWeekend/ExampleImage/ExampleRender.png)
+![InOneWeekend Render Example](https://github.com/SCLDGit/ShirleyTracerSharp/blob/master/InOneWeekend/ExampleImage/ExampleRender.png)
 
 # Changelog
 
 - 6/24/2019 - Initial commit.
 - 6/24/2019 - Added Apache 2.0 license for ImageSharp.
 - 6/24/2019 - Some minor code cleanup.
+- 6/24/2019 - Reoganized repo for upcoming book projects.
