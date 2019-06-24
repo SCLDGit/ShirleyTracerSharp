@@ -1,5 +1,5 @@
 # ShirleyTracerSharp
-A(nother) set of C# ports of Peter Shirley's short books on raytracing: In One Weekend, The Next Week, and The Rest Of Your Life
+A(nother) set of C#/.NET Core 2.0 ports of Peter Shirley's short books on raytracing: In One Weekend, The Next Week, and The Rest Of Your Life
 
 Included are some nice QoL features that go beyond the scope of the books, including:
 - Storage of each of the demo scenes from the books for easy access (see SceneGenerator.cs)
