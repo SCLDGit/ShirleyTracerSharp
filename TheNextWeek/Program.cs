@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Numerics;
+using System.Threading;
 using System.Threading.Tasks;
 
 using SixLabors.Fonts;
@@ -77,19 +78,22 @@ namespace TheNextWeek
             #region Camera Settings
 
             // Three Sphere Scene Settings
-            //var          lookFrom      = new Vec3(0, 0, 0);
-            //var          lookAt        = new Vec3(0, 0, -1);
+            //var lookFrom = new Vec3(0, 0, 0);
+            //var lookAt = new Vec3(0, 0, -1);
             //const double focalDistance = 2;
-            //const double aperture      = 0.0;
+            //const double aperture = 0.0;
+            //var camera = new Camera(lookFrom, lookAt, new Vec3(0, 1, 0), 90, RenderConstants.ImageSizeX / (float)RenderConstants.ImageSizeY, aperture, focalDistance, 0.0, 1.0);
+
 
             // Random Scene Settings
             var lookFrom = new Vec3(13, 2, 3);
             var lookAt = new Vec3(0, 0, 0);
             const double focalDistance = 10.0;
             const double aperture = 0.1;
+            var camera = new Camera(lookFrom, lookAt, new Vec3(0, 1, 0), 20, RenderConstants.ImageSizeX / (float)RenderConstants.ImageSizeY, aperture, focalDistance, 0.0, 1.0);
+
             #endregion
 
-            var camera = new Camera(lookFrom, lookAt, new Vec3(0, 1, 0), 20, RenderConstants.ImageSizeX / (float) RenderConstants.ImageSizeY, aperture, focalDistance, 0.0, 1.0);
 
             using ( var image = new Image<Rgba32>(RenderConstants.ImageSizeX, RenderConstants.ImageSizeY) )
             {
@@ -170,18 +174,24 @@ namespace TheNextWeek
                 {
                     var runtimeString = GetRuntimeString(stopWatch.ElapsedMilliseconds);
 
+                    var bvhString = newWorld is BvhNode ? "BVH: Enabled" : "BVH: Disabled";
+
                     var parallelString = RenderConstants.UseParallelProcessing ? "Parallel" : "Not Parallel";
 
-                    using (var imageWithRunData = image.Clone(p_ctx => p_ctx.ApplyScalingWaterMark(font, $@"{RenderConstants.ImageSizeX}x{RenderConstants.ImageSizeY} | SPP: {RenderConstants.NumberOfSamples} | {parallelString} | {runtimeString}", Rgba32.GhostWhite, Rgba32.DarkSlateGray, 5, false, 30)))
+                    using (var imageWithRunData = image.Clone(p_ctx => p_ctx.ApplyScalingWaterMark(font, $@"{RenderConstants.ImageSizeX}x{RenderConstants.ImageSizeY} | SPP: {RenderConstants.NumberOfSamples} | {parallelString} | {bvhString} | {runtimeString}", Rgba32.GhostWhite, Rgba32.DarkSlateGray, 5, false, 30)))
                     {
-
                         imageWithRunData.Save(RenderConstants.SaveLocation);
-
                     }
                 }
                 else
                 {
                     image.Save(RenderConstants.SaveLocation);
+                }
+
+                // Ugly hack to ensure that the image exists before trying to open it until I can figure out why this fails sometimes. - Comment by Matt Heimlich on 06/24/2019 @ 17:27:58
+                while ( !File.Exists(RenderConstants.SaveLocation) )
+                {
+                    Thread.Sleep(500);
                 }
 
                 new Process { StartInfo = new ProcessStartInfo(RenderConstants.SaveLocation) { UseShellExecute = true } }.Start();
