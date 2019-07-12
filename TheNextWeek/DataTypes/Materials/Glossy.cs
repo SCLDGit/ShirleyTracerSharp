@@ -25,5 +25,10 @@ namespace TheNextWeek.DataTypes.Materials
             p_attenuation = Albedo;
             return Vec3.GetDotProduct(p_scatteredRay.Direction, p_hitRecord.Normal) > 0;
         }
+
+        public Color GetEmitted(double p_u, double p_v, Vec3 p_point)
+        {
+            return new Color(0, 0, 0);
+        }
     }
 }

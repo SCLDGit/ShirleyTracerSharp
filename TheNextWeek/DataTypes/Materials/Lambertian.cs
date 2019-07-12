@@ -21,8 +21,13 @@ namespace TheNextWeek.DataTypes.Materials
             if ( p_attenuation == null ) throw new ArgumentNullException(nameof(p_attenuation));
             var target = p_hitRecord.Point + p_hitRecord.Normal + Math.GetRandomPositionInUnitSphere();
             p_scatteredRay = new Ray(p_hitRecord.Point, target - p_hitRecord.Point, p_rayIn.Time);
-            p_attenuation = Albedo.GetValue(0, 0, p_hitRecord.Point);
+            p_attenuation = Albedo.GetValue(p_hitRecord.U, p_hitRecord.V, p_hitRecord.Point);
             return true;
+        }
+
+        public Color GetEmitted(double p_u, double p_v, Vec3 p_point)
+        {
+            return new Color(0, 0, 0);
         }
     }
 }

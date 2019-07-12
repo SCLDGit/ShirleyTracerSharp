@@ -50,5 +50,10 @@ namespace TheNextWeek.DataTypes.Materials
 
             return true;
         }
+
+        public Color GetEmitted(double p_u, double p_v, Vec3 p_point)
+        {
+            return new Color(0, 0, 0);
+        }
     }
 }

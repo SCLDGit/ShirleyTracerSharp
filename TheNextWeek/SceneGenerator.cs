@@ -1,5 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
+
+using StbSharp;
 
 using TheNextWeek.DataTypes.Materials;
 using TheNextWeek.DataTypes.Materials.Utility;
@@ -137,7 +141,7 @@ namespace TheNextWeek
             var returnList = new List<IHitTarget>();
 
             var checkerTexture = new CheckerTexture(new ConstantTexture(new Color(0.2, 0.3, 0.1)), new ConstantTexture(new Color(0.9, 0.9, 0.9)));
-            var perlinTexture = new NoiseTexture();
+            var perlinTexture = new NoiseTexture( new Color(1, 1, 1), 10.0, NoiseTypes.TURBULENCE);
 
             returnList.Add(new Sphere(new Vec3(0, -1000, 0), 1000, new Lambertian(perlinTexture)));
             for (var i = -11; i < 11; ++i)
@@ -165,6 +169,19 @@ namespace TheNextWeek
             returnList.Add(new Sphere(new Vec3(0, 1, 0), 1.0, new Dielectric(new Color(1, 1, 1), 1.5)));
             returnList.Add(new Sphere(new Vec3(-4, 1, 0), 1.0, new Lambertian(new ConstantTexture(new Color(0.4, 0.2, 0.1)))));
             returnList.Add(new Sphere(new Vec3(4, 1, 0), 1.0, new Glossy(new Color(0.7, 0.6, 0.5), 0.05)));
+
+            return new BvhNode(returnList, 0.0, 1.0);
+        }
+
+        internal static IHitTarget GenerateTwoLargeSphereBvhScene()
+        {
+            var returnList = new List<IHitTarget>();
+
+            var perlinTexture = new NoiseTexture(new Color(0.8, 0.8, 0.8), 4.0, NoiseTypes.MARBLE, 0.5, 10.0, 15);
+
+            returnList.Add(new Sphere(new Vec3(0, -1000, 0), 1000, new Lambertian(perlinTexture)));
+
+            returnList.Add(new Sphere(new Vec3(0, 1, 0), 1.0, new Lambertian(perlinTexture)));
 
             return new BvhNode(returnList, 0.0, 1.0);
         }
@@ -238,6 +255,68 @@ namespace TheNextWeek
             returnList.Add(new Sphere(new Vec3(-4, 1, 0), 1.0, new Lambertian(new ConstantTexture(new Color(0.4, 0.2, 0.1)))));
             returnList.Add(new Sphere(new Vec3(4, 1, 0), 1.0, new Glossy(new Color(0.7, 0.6, 0.5), 0.05)));
 
+            return new BvhNode(returnList, 0.0, 1.0);
+        }
+
+        internal static IHitTarget GenerateEarthBvhScene()
+        {
+
+            var returnList = new List<IHitTarget>();
+
+            var perlinTexture = new NoiseTexture(new Color(0.8, 0.8, 0.8), 4.0, NoiseTypes.MARBLE, 0.5, 10.0, 15);
+
+            returnList.Add(new Sphere(new Vec3(0, -1000, 0), 1000, new Lambertian(perlinTexture)));
+
+            var loader = new ImageReader();
+
+            using ( var stream = File.Open("earthMap.jpg", FileMode.Open) )
+            {
+                var image = loader.Read(stream, StbImage.STBI_rgb);
+
+                var material = new Lambertian(new ImageTexture(image.Data, image.Width, image.Height));
+
+                returnList.Add(new Sphere(new Vec3(0, 1, 0), 1.0, material));
+
+            }
+
+            return new BvhNode(returnList, 0.0, 1.0);
+        }
+
+        internal static IHitTarget GenerateEarthLampBvhScene()
+        {
+
+            var returnList = new List<IHitTarget>();
+
+            var perlinTexture = new NoiseTexture(new Color(0.8, 0.8, 0.8), 4.0, NoiseTypes.MARBLE, 0.5, 10.0, 15);
+
+            returnList.Add(new Sphere(new Vec3(0, -1000, 0), 1000, new Lambertian(perlinTexture)));
+
+            var loader = new ImageReader();
+
+            using (var stream = File.Open("earthMap.jpg", FileMode.Open))
+            {
+                var image = loader.Read(stream, StbImage.STBI_rgb);
+
+                var material = new Emission(new ImageTexture(image.Data, image.Width, image.Height), 10);
+
+                returnList.Add(new Sphere(new Vec3(0, 1, 0), 1.0, material));
+
+            }
+
+            return new BvhNode(returnList, 0.0, 1.0);
+        }
+
+        internal static IHitTarget GenerateSimpleAreaLightBvhScene()
+        {
+            var perlinTexture = new NoiseTexture(new Color(0.8, 0.8, 0.8), 4, NoiseTypes.MARBLE, 0.5, 10, 0 );
+
+            var returnList = new List<IHitTarget>();
+
+            returnList.Add(new Sphere(new Vec3(0, -1000, 0), 1000, new Lambertian(perlinTexture)));
+            returnList.Add(new Sphere(new Vec3(0, 2, 0), 2, new Lambertian(perlinTexture)));
+            returnList.Add(new Sphere(new Vec3(0, 7, 0), 2, new Emission(new ConstantTexture(new Color(1, 1, 1)), 4 )));
+            returnList.Add(new XYAlignedRectangle(3, 5, 1, 3, -2, new Emission(new ConstantTexture(new Color(1, 1, 1)), 4)));
+            
             return new BvhNode(returnList, 0.0, 1.0);
         }
     }

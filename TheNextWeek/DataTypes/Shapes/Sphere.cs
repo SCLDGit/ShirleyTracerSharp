@@ -35,6 +35,7 @@ namespace TheNextWeek.DataTypes.Shapes
                 {
                     p_hitRecord.T = temp;
                     p_hitRecord.Point = p_ray.PointAt(p_hitRecord.T);
+                    GetSphereUv((p_hitRecord.Point - Center) / Radius, ref p_hitRecord);
                     p_hitRecord.Normal = (p_hitRecord.Point - Center) / Radius;
                     p_hitRecord.Material = Material;
                     return true;
@@ -44,6 +45,7 @@ namespace TheNextWeek.DataTypes.Shapes
                 {
                     p_hitRecord.T      = temp;
                     p_hitRecord.Point  = p_ray.PointAt(p_hitRecord.T);
+                    GetSphereUv((p_hitRecord.Point - Center) / Radius, ref p_hitRecord);
                     p_hitRecord.Normal = (p_hitRecord.Point - Center) / Radius;
                     p_hitRecord.Material = Material;
                     return true;
@@ -57,6 +59,14 @@ namespace TheNextWeek.DataTypes.Shapes
         {
             p_box = new BoundingBox(Center - new Vec3(Radius, Radius, Radius), Center + new Vec3(Radius, Radius, Radius));
             return true;
+        }
+
+        private static void GetSphereUv(Vec3 p_point, ref HitRecord p_hitRecord)
+        {
+            var phi = Math.Atan2(p_point.Z, p_point.X);
+            var theta = Math.Asin(p_point.Y);
+            p_hitRecord.U = 1 - (phi + Math.PI) / (2 * Math.PI);
+            p_hitRecord.V = (theta + Math.PI / 2) / Math.PI;
         }
     }
 }

@@ -28,16 +28,21 @@ namespace TheNextWeek
             {
                 var scatteredRay = new Ray(new Vec3(0), new Vec3(0));
                 var attenuation = new Color(0, 0, 0);
+                var emitted = hitRecord.Material.GetEmitted(hitRecord.U, hitRecord.V, hitRecord.Point);
                 if ( p_depth < maxDepth &&
                      hitRecord.Material.Scatter(p_ray, hitRecord, ref attenuation, ref scatteredRay) )
                 {
-                    return attenuation * GetColor(scatteredRay, p_world, p_depth + 1);
+                    return emitted + attenuation * GetColor(scatteredRay, p_world, p_depth + 1);
                 }
-                return new Color(0, 0, 0);
+
+                return emitted;
             }
-            var unitDirection = Vec3.GetUnitVector(p_ray.Direction);
-            var t = 0.5 * (unitDirection.Y + 1.0);
-            return (1.0 - t) * new Color(1.0, 1.0, 1.0) + t * new Color(0.5, 0.7, 1.0);
+
+            return new Color(0, 0, 0);
+
+            //var unitDirection = Vec3.GetUnitVector(p_ray.Direction);
+            //var t = 0.5 * (unitDirection.Y + 1.0);
+            //return (1.0 - t) * new Color(1.0, 1.0, 1.0) + t * new Color(0.5, 0.7, 1.0);
         }
 
         // ReSharper disable once ArrangeTypeMemberModifiers
@@ -53,7 +58,7 @@ namespace TheNextWeek
             #endregion
 
             // Instantiate World. - Comment by Matt Heimlich on 06/23/2019 @ 12:34:43
-            var newWorld = SceneGenerator.GenerateRandomMotionBlurBvhScene();
+            var newWorld = SceneGenerator.GenerateSimpleAreaLightBvhScene();
 
             #region PPM writer (Disabled)
             //using ( var writer = new StreamWriter(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Peter Shirley", "Renders", $@"render_{DateTime.Now:MM-dd-yyyy-HH-mm-ss}.ppm")) )
@@ -84,13 +89,20 @@ namespace TheNextWeek
             //const double aperture = 0.0;
             //var camera = new Camera(lookFrom, lookAt, new Vec3(0, 1, 0), 90, RenderConstants.ImageSizeX / (float)RenderConstants.ImageSizeY, aperture, focalDistance, 0.0, 1.0);
 
+            // Area Light Scene Settings
+            var          lookFrom      = new Vec3(10, 5, 5);
+            var          lookAt        = new Vec3(3, 2.25, 0);
+            const double focalDistance = 2;
+            const double aperture      = 0.0;
+            var          camera        = new Camera(lookFrom, lookAt, new Vec3(0, 1, 0), 32, RenderConstants.ImageSizeX / (float)RenderConstants.ImageSizeY, aperture, focalDistance, 0.0, 1.0);
+
 
             // Random Scene Settings
-            var lookFrom = new Vec3(13, 2, 3);
-            var lookAt = new Vec3(0, 0, 0);
-            const double focalDistance = 10.0;
-            const double aperture = 0.1;
-            var camera = new Camera(lookFrom, lookAt, new Vec3(0, 1, 0), 20, RenderConstants.ImageSizeX / (float)RenderConstants.ImageSizeY, aperture, focalDistance, 0.0, 1.0);
+            //var lookFrom = new Vec3(-13, 2, -3);
+            //var lookAt = new Vec3(0, 0, 0);
+            //const double focalDistance = 10.0;
+            //const double aperture = 0.001;
+            //var camera = new Camera(lookFrom, lookAt, new Vec3(0, 1, 0), 20, RenderConstants.ImageSizeX / (float)RenderConstants.ImageSizeY, aperture, focalDistance, 0.0, 1.0);
 
             #endregion
 
