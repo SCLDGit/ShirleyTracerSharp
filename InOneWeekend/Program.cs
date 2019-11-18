@@ -16,6 +16,7 @@ using SixLabors.Fonts;
 using InOneWeekend.ImageUtilities;
 
 using SixLabors.ImageSharp.Processing;
+using Color = InOneWeekend.DataTypes.Utility.Color;
 
 namespace InOneWeekend
 {
@@ -77,10 +78,15 @@ namespace InOneWeekend
             #endregion
 
             #region Camera Settings
-            var lookFrom = new Vec3(13, 2, 3);
-            var lookAt = new Vec3(0, 0, 0);
-            const double focalDistance = 10.0;
-            const double aperture = 0.1;
+            //var lookFrom = new Vec3(13, 2, 3);
+            //var lookAt = new Vec3(0, 0, 0);
+            //const double focalDistance = 10.0;
+            //const double aperture = 0.1;
+
+            var lookFrom = new Vec3(0, 0, 1);
+            var lookAt = new Vec3(0, 0, -1);
+            const double focalDistance = 2;
+            const double aperture = 0.0;
             #endregion
 
             var camera = new Camera(lookFrom, lookAt, new Vec3(0, 1, 0), 20, RenderConstants.ImageSizeX / (float) RenderConstants.ImageSizeY, aperture, focalDistance );

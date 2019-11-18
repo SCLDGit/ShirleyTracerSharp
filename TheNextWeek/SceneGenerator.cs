@@ -42,6 +42,24 @@ namespace TheNextWeek
             return new BvhNode(returnList, 0.0, 1.0);
         }
 
+        internal static IHitTarget GenerateSingleMovingSphereTestScene()
+        {
+            //var lookFrom = new Vec3(0, 0, 1);
+            //var lookAt = new Vec3(0, 0, -1);
+            //const double focalDistance = 2;
+            //const double aperture = 0.0;
+            //var camera = new ThinLensCamera(lookFrom, lookAt, new Vec3(0, 1, 0), 90, p_renderParameters.XResolution / (float)p_renderParameters.YResolution, aperture, focalDistance, 0.0, 1.0);
+
+
+            var worldList = new List<IHitTarget>();
+
+            worldList.Add(new MovingSphere(new Vec3(-0.5, 0, -1.0), new Vec3(0.5, 0, -1.0), 0.0, 1.0, 0.35, new Lambertian(new ConstantTexture(new Color(0.8, 0.3, 0.3))) ));
+            worldList.Add(new Sphere(new Vec3(0, -100.5, -1), 100, new Lambertian(new ConstantTexture(new Color(0.8, 0.8, 0))) ));
+
+
+            return new World(worldList);
+        }
+
         internal static IHitTarget GenerateThreeSphereMotionBlurScene()
         {
             var rng = new Random();
